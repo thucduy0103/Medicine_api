@@ -28,9 +28,24 @@ const getProducts = {
   }),
 };
 
-const getProduct = {
-  params: Joi.object().keys({
-    productId: Joi.string().custom(objectId),
+const getProductBySlug = {
+  query: Joi.object().keys({
+    slug: Joi.string().required(),
+  }),
+};
+
+const getProductById = {
+  query: Joi.object().keys({
+    slug: Joi.string(),
+  }),
+};
+
+const searchProduct = {
+  query: Joi.object().keys({
+    search: Joi.string(),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
 
@@ -61,7 +76,9 @@ const deleteProduct = {
 module.exports = {
   createProduct,
   getProducts,
-  getProduct,
+  getProductBySlug,
+  getProductById,
+  searchProduct,
   updateProduct,
   deleteProduct,
 };

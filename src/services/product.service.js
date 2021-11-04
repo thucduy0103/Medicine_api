@@ -34,6 +34,10 @@ const getProductById = async (id) => {
   return Product.findById(id);
 };
 
+const getProductBySlug = async (slug) => {
+  return Product.findOne({slug:slug});
+};
+
 /**
  * Update Product by id
  * @param {ObjectId} ProductId
@@ -68,6 +72,7 @@ module.exports = {
   createProduct,
   queryProducts,
   getProductById,
+  getProductBySlug,
   updateProductById,
   deleteProductById,
 };

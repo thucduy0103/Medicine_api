@@ -3,6 +3,7 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { productService } = require('../services');
+const changeSlug = require('../utils/changeSlug')
 
 const createProduct = catchAsync(async (req, res) => {
   const Product = await productService.createProduct(req.body);
@@ -19,8 +20,26 @@ const getProducts = catchAsync(async (req, res) => {
   res.send(result);
 });
 
-const getProduct = catchAsync(async (req, res) => {
+const getProductBySlug = catchAsync(async (req, res) => {
+  const Product = await productService.getProductBySlug(req.query.slug);
+  if (!Product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  res.send(Product);
+});
+
+const getProductById = catchAsync(async (req, res) => {
   const Product = await productService.getProductById(req.query.ProductId);
+  if (!Product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  res.send(Product);
+});
+
+const searchProduct = catchAsync(async (req, res) => {
+  const key = changeSlug(req.query.search);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const Product = await productService.queryProducts({slug: new RegExp(key,'i')},options);
   if (!Product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
   }
@@ -90,7 +109,9 @@ const createCrawl = catchAsync(async (req, res) => {
 module.exports = {
   createProduct,
   getProducts,
-  getProduct,
+  getProductBySlug,
+  getProductById,
+  searchProduct,
   updateProduct,
   deleteProduct,
   getcategories,

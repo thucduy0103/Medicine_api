@@ -13,7 +13,11 @@ const router = express.Router();
 
 router.get('/', validate(productValidation.getProducts), productController.getProducts);
 
-router.get('/get-product', validate(productValidation.getProduct), productController.getProduct);
+router.get('/get-product', validate(productValidation.getProductBySlug), productController.getProductBySlug);
+
+router.get('/get-product', validate(productValidation.getProductById), productController.getProductById);
+
+router.get('/search-product', validate(productValidation.searchProduct), productController.searchProduct);
 
 router.get('/categories', auth('manageProducts'), productController.getcategories);
 
