@@ -4,15 +4,16 @@ const { objectId } = require('./custom.validation');
 const createProduct = {
   body: Joi.object().keys({
     name: Joi.string().required(),
-    content:Joi.string().required(),
+    slug: Joi.string(),
+    content: Joi.string().required(),
     description: Joi.string().required(),
     price: Joi.number().required(),
     unit: Joi.string().required(),
     category: Joi.array().required(),
-    discount_percentage: Joi.number().required(),
-    inventory_qty: Joi.number().required(),
-    production_date : Joi.string().required(),
-    expiry_date : Joi.string().required(),
+    discountPercentage: Joi.number().required(),
+    inventoryQty: Joi.number().required(),
+    productionDate: Joi.string().required(),
+    expiryDate: Joi.string().required(),
   }),
 };
 
@@ -20,6 +21,7 @@ const getProducts = {
   query: Joi.object().keys({
     name: Joi.string(),
     content: Joi.string(),
+    category: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
@@ -38,14 +40,14 @@ const updateProduct = {
   }),
   body: Joi.object()
     .keys({
-        name: Joi.string(),
-        content: Joi.string(),
-        description: Joi.string(),
-        price: Joi.number(),
-        unit: Joi.string(),
-        category: Joi.array(),
-        discount_percentage: Joi.number(),
-        inventory_qty: Joi.number(),
+      name: Joi.string(),
+      content: Joi.string(),
+      description: Joi.string(),
+      price: Joi.number(),
+      unit: Joi.string(),
+      category: Joi.array(),
+      discount_percentage: Joi.number(),
+      inventory_qty: Joi.number(),
     })
     .min(1),
 };

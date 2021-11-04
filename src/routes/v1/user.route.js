@@ -11,7 +11,7 @@ router
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
 
-router.get('/me',auth('getUsers'), userController.getUser);
+router.get('/me', auth('getUsers'), userController.getUser);
 
 router
   .route('/:userId')

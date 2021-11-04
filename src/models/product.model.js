@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs');
 const { toJSON, paginate } = require('./plugins');
-const { roles } = require('../config/roles');
+const changeToSlug = require('../utils/changeSlug');
 
 const productSchema = mongoose.Schema(
   {
@@ -11,58 +10,63 @@ const productSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    content: {
+    slug: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      lowercase: true
+    },
+    image: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      unique: false,
+      trim: true,
     },
     description: {
       type: String,
-      required: true,
-      unique: true,
       trim: true,
     },
     price: {
       type: Number,
       required: true,
-      trim: true, 
+      trim: true,
     },
     unit: {
       type: String,
       required: true,
-      trim: true, 
+      trim: true,
     },
     category: {
       type: [String],
       required: true,
-      trim: true, 
+      trim: true,
     },
-    discount_percentage : {
+    discountPercentage: {
+      type: Number,
+      trim: true,
+    },
+    inventoryQty: {
       type: Number,
       required: true,
-      trim: true, 
+      trim: true,
     },
-    inventory_qty : {
-      type: Number,
-      required: true,
-      trim: true, 
-    },
-    production_date : {
+    productionDate: {
       type: String,
       required: true,
-      trim: true, 
+      trim: true,
     },
-    expiry_date : {
+    expiryDate: {
       type: String,
       required: true,
-      trim: true, 
-    }
+      trim: true,
+    },
   },
   {
     timestamps: true,
-    versionKey: false
+    versionKey: false,
   }
 );
 
@@ -70,11 +74,10 @@ const productSchema = mongoose.Schema(
 productSchema.plugin(toJSON);
 productSchema.plugin(paginate);
 
-
-// productSchema.pre('save', async function (next) {
-//   const user = this;
-//   next();
-// });
+productSchema.pre('save', async function (next) {
+  this.slug = await changeToSlug(this.name);
+  next();
+});
 
 /**
  * @typedef Product

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const changeToSlug = require('../utils/changeSlug')
+const changeToSlug = require('../utils/changeSlug');
 const { toJSON, paginate } = require('./plugins');
 
 const categorySchema = mongoose.Schema(
@@ -14,7 +14,7 @@ const categorySchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      lowercase: true
+      lowercase: true,
     },
     image: {
       type: String,
@@ -24,11 +24,11 @@ const categorySchema = mongoose.Schema(
     isActive: {
       type: Boolean,
       required: true,
-    }
+    },
   },
   {
     timestamps: true,
-    versionKey: false
+    versionKey: false,
   }
 );
 
@@ -36,9 +36,8 @@ const categorySchema = mongoose.Schema(
 categorySchema.plugin(toJSON);
 categorySchema.plugin(paginate);
 
-
 categorySchema.pre('save', async function (next) {
-  this.slug = await changeToSlug(this.name)
+  this.slug = await changeToSlug(this.name);
   next();
 });
 

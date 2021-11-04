@@ -11,19 +11,29 @@ const router = express.Router();
 //   .post(auth('manageProducts'), validate(productValidation.createUser), productController.createProduct)
 //   .get(auth('getProducts'), validate(productValidation.getUsers), productController.getProducts);
 
-router.get('/', validate(productValidation.getProducts), productController.getProducts)
+router.get('/', validate(productValidation.getProducts), productController.getProducts);
 
-router.get('/get-product',validate(productValidation.getProduct), productController.getProduct)
+router.get('/get-product', validate(productValidation.getProduct), productController.getProduct);
 
-router.get('/categories',auth('manageProducts'),productController.getcategories)
+router.get('/categories', auth('manageProducts'), productController.getcategories);
 
-router.post('/create',auth('manageProducts'),validate(productValidation.createProduct),productController.createProduct)
+router.post('/create', auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct);
 
-router.put('/update-product',auth('manageProducts'),validate(productValidation.updateProduct), productController.updateProduct)
+router.put(
+  '/update-product',
+  auth('manageProducts'),
+  validate(productValidation.updateProduct),
+  productController.updateProduct
+);
 
-router.delete('/delete-product',auth('manageProducts'),validate(productValidation.deleteProduct), productController.deleteProduct)
+router.delete(
+  '/delete-product',
+  auth('manageProducts'),
+  validate(productValidation.deleteProduct),
+  productController.deleteProduct
+);
 
-router.post('/create-categories', productController.getProduct)
+router.post('/create-item', productController.createCrawl);
 
 // router
 //   .route('/:productId')

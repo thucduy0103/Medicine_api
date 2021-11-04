@@ -3,7 +3,7 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { categoryService } = require('../services');
-const changeToSlug = require('../utils/changeSlug')
+const changeToSlug = require('../utils/changeSlug');
 
 const createCategory = catchAsync(async (req, res) => {
   const category = await categoryService.createCategory(req.body);
@@ -36,12 +36,12 @@ const deleteCategory = catchAsync(async (req, res) => {
 });
 
 const createCategories = catchAsync(async (req, res) => {
-  let list = req.body.data.search.edges
-  var array = list.map(x=>x.node)
-  var arr = []
-  array.forEach(element => {
-    let item = {name: element.name,slug:changeToSlug(element.name), image: element.icon.url}
-    arr.push(item)
+  const list = req.body.data.search.edges;
+  const array = list.map((x) => x.node);
+  const arr = [];
+  array.forEach((element) => {
+    const item = { name: element.name, slug: changeToSlug(element.name), image: element.icon.url };
+    arr.push(item);
   });
   // console.log(arr);
   const category = await categoryService.createCategories(arr);

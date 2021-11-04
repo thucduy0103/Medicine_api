@@ -12,8 +12,8 @@ const createCategory = async (CategoryBody) => {
 };
 
 const createCategories = async (CategoryBody) => {
-    return Category.insertMany(CategoryBody);
-  };
+  return Category.insertMany(CategoryBody);
+};
 
 /**
  * Query for Categories

@@ -10,7 +10,7 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getProducts = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['category', 'slug']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await productService.queryProducts(filter, options);
   res.send(result);
@@ -35,23 +35,53 @@ const deleteProduct = catchAsync(async (req, res) => {
 });
 
 const getcategories = catchAsync(async (req, res) => {
-  let data = []
-    for (let index = 0; index < 10; index++) {
-        // let item = {month: index.toString(), total:Math.floor(Math.random())}
-        let item = "Thực phẩm chức năng"
-        data.push(item)
-    }
-  res.json({results:data});
+  const data = [];
+  for (let index = 0; index < 10; index++) {
+    // let item = {month: index.toString(), total:Math.floor(Math.random())}
+    const item = 'Thực phẩm chức năng';
+    data.push(item);
+  }
+  res.json({ results: data });
 });
 
-const createcategories = catchAsync(async (req, res) => {
-  let data = []
-    for (let index = 0; index < 10; index++) {
-        // let item = {month: index.toString(), total:Math.floor(Math.random())}
-        let item = "Thực phẩm chức năng"
-        data.push(item)
-    }
-  res.json({results:data});
+const createCrawl = catchAsync(async (req, res) => {
+  //   let data = req.body.url
+
+  //   axios.get(req.body.url)
+  //   .then((response) => {
+  //       const $ = cheerio.load(response.data);
+  //       console.log($('div > .detail_product--description > div > h1').text().trim());
+  //  })
+  //   .catch(ex =>{
+
+  //     })
+
+  const { data } = req.body;
+
+  let descriptionString = `mô tả chi tiết ${data.product.name}`;
+  if (data.product.metadata.length > 0) {
+    console.log(data.product.metadata.length);
+    descriptionString = data.product.metadata[0].value;
+  }
+
+  const product = {
+    name: data.product.name,
+    slug: data.product.slug,
+    image: data.product.thumbnail2x.url,
+    content: data.product.description || data.product.name,
+    description: descriptionString,
+    price: data.product.variants[0].pricing.price.net.amount,
+    unit: data.product.variants[0].name,
+    category: ['cham-soc-ca-nhan'],
+    discountPercentage: 0,
+    inventoryQty: data.product.variants[0].quantityAvailable,
+    productionDate: '03/11/2021',
+    expiryDate: '03/11/2022',
+  };
+
+  // res.send(product)
+  const Product = await productService.createProduct(product);
+  res.status(httpStatus.CREATED).send(Product);
 });
 
 module.exports = {
@@ -61,5 +91,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getcategories,
-  createcategories,
+  createCrawl,
 };
