@@ -10,7 +10,10 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getProducts = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['category', 'slug']);
+  const filter = pick(req.query, ['']);
+  if(req.query.category){
+    filter = pick(req.query, ['category']);
+  }
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await productService.queryProducts(filter, options);
   res.send(result);
@@ -36,7 +39,7 @@ const deleteProduct = catchAsync(async (req, res) => {
 
 const getcategories = catchAsync(async (req, res) => {
   const data = [];
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 10; index += 1) {
     // let item = {month: index.toString(), total:Math.floor(Math.random())}
     const item = 'Thực phẩm chức năng';
     data.push(item);
@@ -60,7 +63,7 @@ const createCrawl = catchAsync(async (req, res) => {
 
   let descriptionString = `mô tả chi tiết ${data.product.name}`;
   if (data.product.metadata.length > 0) {
-    console.log(data.product.metadata.length);
+    // console.log(data.product.metadata.length);
     descriptionString = data.product.metadata[0].value;
   }
 

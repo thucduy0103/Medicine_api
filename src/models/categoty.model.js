@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 const changeToSlug = require('../utils/changeSlug');
 const { toJSON, paginate } = require('./plugins');
 

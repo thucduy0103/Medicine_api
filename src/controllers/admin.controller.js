@@ -6,7 +6,7 @@ const getDashboard = catchAsync(async (req, res) => {
 
 const getReportProduct = catchAsync(async (req, res) => {
   const data = [];
-  for (let index = 1; index < 13; index++) {
+  for (let index = 1; index < 13; index += 1) {
     const item = { month: index.toString(), total: Math.floor(Math.random()) };
     data.push(item);
   }
@@ -14,7 +14,7 @@ const getReportProduct = catchAsync(async (req, res) => {
 });
 const getIncome = catchAsync(async (req, res) => {
   const data = [];
-  for (let index = 1; index < 13; index++) {
+  for (let index = 1; index < 13; index += 1) {
     const item = { month: index.toString(), total: Math.floor(Math.random()) };
     data.push(item);
   }
@@ -22,7 +22,7 @@ const getIncome = catchAsync(async (req, res) => {
 });
 const getContact = catchAsync(async (req, res) => {
   const data = [];
-  for (let index = 1; index < 13; index++) {
+  for (let index = 1; index < 13; index += 1) {
     const item = { month: index.toString(), count: Math.floor(Math.random()) };
     data.push(item);
   }
