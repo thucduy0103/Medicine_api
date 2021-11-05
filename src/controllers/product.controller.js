@@ -11,7 +11,7 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 const getProducts = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['']);
+  let filter = pick(req.query, ['']);
   if(req.query.category){
     filter = pick(req.query, ['category']);
   }
