@@ -15,7 +15,7 @@ router.get('/', validate(productValidation.getProducts), productController.getPr
 
 router.get('/get-product', validate(productValidation.getProductBySlug), productController.getProductBySlug);
 
-router.get('/get-product', validate(productValidation.getProductById), productController.getProductById);
+router.get('/get-product-by-id', validate(productValidation.getProductById), productController.getProductById);
 
 router.get('/search-product', validate(productValidation.searchProduct), productController.searchProduct);
 

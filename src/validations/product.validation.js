@@ -36,7 +36,7 @@ const getProductBySlug = {
 
 const getProductById = {
   query: Joi.object().keys({
-    slug: Joi.string(),
+    ProductId: Joi.string(),
   }),
 };
 

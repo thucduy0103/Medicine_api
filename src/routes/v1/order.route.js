@@ -1,0 +1,33 @@
+const express = require('express');
+const auth = require('../../middlewares/auth');
+const validate = require('../../middlewares/validate');
+const orderValidation = require('../../validations/order.validation');
+const orderController = require('../../controllers/order.controller');
+
+const router = express.Router();
+
+router.get('/',auth('createOrder'), validate(orderValidation.getOrders), orderController.getOrders);
+
+// router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderBySlug), orderController.getOrderBySlug);
+
+router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderById), orderController.getOrderById);
+
+router.get('/search-order', validate(orderValidation.searchOrder), orderController.searchOrder);
+
+router.post('/create', auth('createOrder'), validate(orderValidation.createOrder), orderController.createOrder);
+
+router.put(
+  '/update-order',
+  auth('manageOrders'),
+  validate(orderValidation.updateOrder),
+  orderController.updateOrder
+);
+
+router.delete(
+  '/delete-order',
+  auth('manageOrders'),
+  validate(orderController.deleteOrder),
+  orderController.deleteOrder
+);
+
+module.exports = router;

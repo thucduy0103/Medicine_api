@@ -14,7 +14,7 @@ const getProducts = catchAsync(async (req, res) => {
   let filter = pick(req.query, ['']);
   if(req.query.category){
     filter = pick(req.query, ['category']);
-  }
+  } 
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await productService.queryProducts(filter, options);
   res.send(result);

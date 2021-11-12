@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const productRoute = require('./product.route');
 const categoryRoute = require('./category.route');
+const orderRoute = require('./order.route');
 const docsRoute = require('./docs.route');
 const adminRoute = require('./admin.route');
 const config = require('../../config/config');
@@ -25,6 +26,10 @@ const defaultRoutes = [
   {
     path: '/categories',
     route: categoryRoute,
+  },
+  {
+    path: '/orders',
+    route: orderRoute,
   },
   {
     path: '/admin',
