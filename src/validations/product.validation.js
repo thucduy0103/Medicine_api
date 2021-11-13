@@ -7,6 +7,8 @@ const createProduct = {
     slug: Joi.string(),
     content: Joi.string().required(),
     description: Joi.string().required(),
+    image: Joi.string().required(),
+    imageDetail: Joi.array().required(),
     price: Joi.number().required(),
     unit: Joi.string().required(),
     category: Joi.array().required(),

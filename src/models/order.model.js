@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const changeToSlug = require('../utils/changeSlug');
 const { toJSON, paginate } = require('./plugins');
 
-const modelSchema = mongoose.Schema(
+const orderSchema = mongoose.Schema(
   {
     receiverName: {
       type: String,
@@ -59,12 +59,12 @@ const modelSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-modelSchema.plugin(toJSON);
-modelSchema.plugin(paginate);
+orderSchema.plugin(toJSON);
+orderSchema.plugin(paginate);
 
 /**
- * @typedef Model
+ * @typedef order
  */
-const Model = mongoose.model('Model', modelSchema);
+const order = mongoose.model('Order', orderSchema);
 
-module.exports = Model;
+module.exports = order;
