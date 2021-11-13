@@ -19,8 +19,9 @@ const createCart = catchAsync(async (req, res) => {
 });
 
 const getCarts = catchAsync(async (req, res) => {
-    // console.log(req.user)
-  let filter = pick(req.user._id, ['_id']);
+  // let filter = pick(req.user._id, ['userId']);
+  let filter = {userId:req.user._id};
+  // console.log(filter)
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await cartService.queryCarts(filter, options);
   const arr = result.results
