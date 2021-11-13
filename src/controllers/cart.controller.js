@@ -8,6 +8,7 @@ const changeSlug = require('../utils/changeSlug');
 const createCart = catchAsync(async (req, res) => {
   const product = await productService.getProductById(req.body.productId);
   var cart = req.body;
+  cart.userId = req.user._id
   cart.productName = product.name;
   cart.image = product.image
   cart.price = product.price

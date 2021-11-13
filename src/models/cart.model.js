@@ -4,6 +4,11 @@ const { toJSON, paginate } = require('./plugins');
 
 const cartSchema = mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     productName: {
       type: String,
       required: true,

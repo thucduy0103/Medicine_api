@@ -14,18 +14,9 @@ const orderSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    productName: {
-      type: String,
+    listCart: {
+      type: Array,
       required: true,
-      trim: true,
-    },
-    productId: {
-      type: String,
-      required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
     },
     phoneNumber: {
       type: String,

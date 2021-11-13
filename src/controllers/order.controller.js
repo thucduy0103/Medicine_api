@@ -2,21 +2,27 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { orderService, productService } = require('../services');
+const { orderService, cartService } = require('../services');
 const changeSlug = require('../utils/changeSlug');
 
 const createOrder = catchAsync(async (req, res) => {
-  const product = await productService.getProductById(req.body.productId);
+  const cart = await cartService.getCartByIds(req.body.cartIds);
   var order = req.body;
-  order.productId = product.id;
-  order.productName = product.name;
+  order.listCart = cart
   order.userId = req.user._id;
   order.shippingCode = 'Chưa cập nhật'
   order.shippingUnit = 'Chưa cập nhật'
   order.orderStatus = 1
   order.orderStatusString = 'Đơn hàng mới, đang chờ xử lý'
-//   console.log(order);
+    console.log(order);
   const Order = await orderService.createOrder(order);
+  // var orderResponse = Order.toObject()
+  // orderResponse.id = Order._id.toString()
+  // Reflect.deleteProperty(orderResponse, "createdAt")
+  // Reflect.deleteProperty(orderResponse, "updatedAt")
+  // Reflect.deleteProperty(orderResponse, "_id")
+  // orderResponse["listCart"] = cart
+  // console.log(orderResponse);
   res.status(httpStatus.CREATED).send(Order);
 });
 

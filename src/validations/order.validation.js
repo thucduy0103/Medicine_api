@@ -4,8 +4,7 @@ const { objectId } = require('./custom.validation');
 const createOrder = {
   body: Joi.object().keys({
     receiverName: Joi.string().required(),
-    productId: Joi.string().required().custom(objectId),
-    quantity: Joi.number().required(),
+    cartIds: Joi.array().required(),
     phoneNumber: Joi.string().required().length(10),
     addressDelivery: Joi.string().required()
   }),
@@ -46,17 +45,10 @@ const updateOrder = {
   }),
   body: Joi.object()
     .keys({
-        userId: Joi.string(),
-        userName: Joi.string(),
-        productName: Joi.string(),
-        productId: Joi.string(),
-        quantity: Joi.number(),
-        phoneNumber: Joi.string().length(10),
-        addressDelivery: Joi.string(),
-        shippingCode: Joi.string(),
-        shippingUnit: Joi.string(),
-        orderStatus: Joi.number(),
-        orderStatusString: Joi.string(),
+      receiverName: Joi.string().required(),
+      cartIds: Joi.array().required().custom(objectId),
+      phoneNumber: Joi.string().required().length(10),
+      addressDelivery: Joi.string().required()
     })
     .min(1),
 };

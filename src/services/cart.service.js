@@ -34,6 +34,10 @@ const getCartById = async (id) => {
   return Cart.findById(id);
 };
 
+const getCartByIds = async (ids) => {
+  return Cart.find({_id:{$in: ids}});
+};
+
 const getCartBySlug = async (slug) => {
   return Cart.findOne({slug:slug});
 };
@@ -72,6 +76,7 @@ module.exports = {
   createCart,
   queryCarts,
   getCartById,
+  getCartByIds,
   getCartBySlug,
   updateCartById,
   deleteCartById,
