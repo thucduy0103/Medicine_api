@@ -23,6 +23,22 @@ const getCarts = catchAsync(async (req, res) => {
   let filter = pick(req.user._id, ['_id']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await cartService.queryCarts(filter, options);
+  const arr = result.results
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i+1; j < arr.length; j++) {
+      if(arr[i].productId === arr[j].productId){
+        let quantity = arr[i].quantity + arr[j].quantity
+        let priceTotal = arr[i].priceTotal + arr[j].priceTotal
+        arr[i].quantity = quantity
+        arr[i].priceTotal = priceTotal
+        // arr.push(item)
+        // arr.splice(i,1)
+        arr.splice(j,1)
+        // console.log(arr[i]);
+        break;
+      }
+    }
+  }
   res.send(result);
 });
 

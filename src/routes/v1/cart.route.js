@@ -26,7 +26,7 @@ router.put(
 router.delete(
   '/delete-cart',
   auth('manageOrders'),
-  validate(cartController.deleteCart),
+  validate(cartValidation.deleteCart),
   cartController.deleteCart
 );
 
