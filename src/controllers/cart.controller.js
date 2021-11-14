@@ -36,7 +36,7 @@ const getCarts = catchAsync(async (req, res) => {
         // arr.splice(i,1)
         arr.splice(j,1)
         // console.log(arr[i]);
-        break;
+        // break;
       }
     }
   }

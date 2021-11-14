@@ -23,12 +23,7 @@ router.get('/categories', auth('manageProducts'), productController.getcategorie
 
 router.post('/create', auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct);
 
-router.put(
-  '/update-product',
-  auth('manageProducts'),
-  validate(productValidation.updateProduct),
-  productController.updateProduct
-);
+router.put('/',auth('manageProducts'),validate(productValidation.updateProduct),productController.updateProduct);
 
 router.delete(
   '/delete-product',
@@ -38,6 +33,8 @@ router.delete(
 );
 
 router.post('/create-item', productController.createCrawl);
+
+router.post('/update-item', productController.updateCrawl);
 
 // router
 //   .route('/:productId')

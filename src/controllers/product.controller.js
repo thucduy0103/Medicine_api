@@ -106,6 +106,41 @@ const createCrawl = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(Product);
 });
 
+const axios = require('axios')
+
+const updateCrawl = catchAsync(async (req, res) => {
+
+  var { data } = await axios.get(req.body.url)
+
+  data = data.data
+    // console.log(data);
+
+  let descriptionString = `mô tả chi tiết ${data.product.name}`;
+  if (data.product.metadata.length > 0) {
+    // console.log(data.product.metadata.length);
+    descriptionString = data.product.metadata[0].value;
+  }
+
+  const product = {
+    name: data.product.name,
+    slug: data.product.slug,
+    image: data.product.thumbnail2x.url,
+    content: data.product.description || data.product.name,
+    description: descriptionString,
+    price: data.product.variants[0].pricing.price.net.amount,
+    unit: data.product.variants[0].name,
+    category: ['cham-soc-ca-nhan'],
+    discountPercentage: 0,
+    inventoryQty: data.product.variants[0].quantityAvailable,
+    productionDate: '03/11/2021',
+    expiryDate: '03/11/2022',
+  };
+
+  // res.send(product)
+  const Product = await productService.createProduct(product);
+  res.status(httpStatus.CREATED).send(Product);
+});
+
 module.exports = {
   createProduct,
   getProducts,
@@ -116,4 +151,5 @@ module.exports = {
   deleteProduct,
   getcategories,
   createCrawl,
+  updateCrawl,
 };
