@@ -6,16 +6,27 @@ const { cartService, productService } = require('../services');
 const changeSlug = require('../utils/changeSlug');
 
 const createCart = catchAsync(async (req, res) => {
-  const product = await productService.getProductById(req.body.productId);
-  var cart = req.body;
-  cart.userId = req.user._id
-  cart.productName = product.name;
-  cart.image = product.image
-  cart.price = product.price
-  cart.priceTotal = product.price * req.body.quantity
-  cart.inventoryQty = product.inventoryQty
-  const Cart = await cartService.createCart(cart);
-  res.status(httpStatus.CREATED).send(Cart);
+
+  let filter = {userId:req.user._id,productId:req.body.productId};
+  const cart = await cartService.queryCart(filter)
+  if (cart) {
+    cart.quantity = cart.quantity + req.body.quantity
+    cart.priceTotal = cart.priceTotal + cart.price * req.body.quantity
+    console.log(cart);
+    const Cart = await cartService.updateCartById(cart.id,cart);
+    res.status(httpStatus.CREATED).send(Cart);
+  }else{
+    const product = await productService.getProductById(req.body.productId);
+    var newCart = req.body;
+    newCart.userId = req.user._id
+    newCart.productName = product.name;
+    newCart.image = product.image
+    newCart.price = product.price
+    newCart.priceTotal = product.price * req.body.quantity
+    newCart.inventoryQty = product.inventoryQty
+    const Cart = await cartService.createCart(newCart);
+    res.status(httpStatus.CREATED).send(Cart);
+  }
 });
 
 const getCarts = catchAsync(async (req, res) => {
@@ -23,24 +34,8 @@ const getCarts = catchAsync(async (req, res) => {
   let filter = {userId:req.user._id};
   // console.log(filter)
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await cartService.queryCarts(filter, options);
-  const arr = result.results
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i+1; j < arr.length; j++) {
-      if(arr[i].productId === arr[j].productId){
-        let quantity = arr[i].quantity + arr[j].quantity
-        let priceTotal = arr[i].priceTotal + arr[j].priceTotal
-        arr[i].quantity = quantity
-        arr[i].priceTotal = priceTotal
-        // arr.push(item)
-        // arr.splice(i,1)
-        arr.splice(j,1)
-        // console.log(arr[i]);
-        // break;
-      }
-    }
-  }
-  res.send(result);
+  const results = await cartService.queryCarts(filter, options);
+  res.send(results);
 });
 
 const getCartBySlug = catchAsync(async (req, res) => {

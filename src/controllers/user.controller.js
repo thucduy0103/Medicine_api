@@ -17,11 +17,33 @@ const getUsers = catchAsync(async (req, res) => {
 });
 
 const getUser = catchAsync(async (req, res) => {
+  const user = await userService.getUserById(req.params.userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  res.send(user);
+});
+
+const getMe = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.user._id);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   res.send(user);
+});
+
+const roleUser = catchAsync(async (req, res) => {
+  const role = [
+    {
+      id: 0,
+      nameRole : "Quản trị" 
+    },
+    {
+      id: 1,
+      nameRole : "Khách hàng" 
+     }
+  ]
+  res.send(role);
 });
 
 const updateUser = catchAsync(async (req, res) => {
@@ -38,6 +60,8 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  getMe,
+  roleUser,
   updateUser,
   deleteUser,
 };

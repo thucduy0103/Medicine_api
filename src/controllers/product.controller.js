@@ -47,12 +47,12 @@ const searchProduct = catchAsync(async (req, res) => {
 });
 
 const updateProduct = catchAsync(async (req, res) => {
-  const Product = await productService.updateProductById(req.query.ProductId, req.body);
+  const Product = await productService.updateProductById(req.params.productId, req.body);
   res.send(Product);
 });
 
 const deleteProduct = catchAsync(async (req, res) => {
-  await productService.deleteProductById(req.query.ProductId);
+  await productService.deleteProductById(req.params.productId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 

@@ -25,6 +25,11 @@ const queryCarts = async (filter, options) => {
   return Carts;
 };
 
+const queryCart = async (filter) => {
+  const cart = await Cart.findOne(filter);
+  return cart;
+};
+
 /**
  * Get Cart by id
  * @param {ObjectId} id
@@ -75,6 +80,7 @@ const deleteCartById = async (CartId) => {
 module.exports = {
   createCart,
   queryCarts,
+  queryCart,
   getCartById,
   getCartByIds,
   getCartBySlug,

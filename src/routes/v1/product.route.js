@@ -21,16 +21,21 @@ router.get('/search-product', validate(productValidation.searchProduct), product
 
 router.get('/categories', auth('manageProducts'), productController.getcategories);
 
-router.post('/create', auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct);
+router.post('/', auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct);
 
-router.put('/',auth('manageProducts'),validate(productValidation.updateProduct),productController.updateProduct);
+router
+  .route('/:productId')
+  .put(auth('manageProducts'),validate(productValidation.updateProduct),productController.updateProduct)
+  .delete(auth('manageProducts'), validate(productValidation.deleteProduct), productController.deleteProduct)
 
-router.delete(
-  '/delete-product',
-  auth('manageProducts'),
-  validate(productValidation.deleteProduct),
-  productController.deleteProduct
-);
+// router.put('/:productId',auth('manageProducts'),validate(productValidation.updateProduct),productController.updateProduct);
+
+// router.delete(
+//   '/:productId',
+//   auth('manageProducts'),
+//   validate(productValidation.deleteProduct),
+//   productController.deleteProduct
+// );
 
 router.post('/create-item', productController.createCrawl);
 
