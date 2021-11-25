@@ -46,6 +46,21 @@ const roleUser = catchAsync(async (req, res) => {
   res.send(role);
 });
 
+const updateMe = catchAsync(async (req, res) => {
+  const user = await userService.updateUserById(req.user._id, req.body);
+  res.send(user);
+});
+
+const updateEmail = catchAsync(async (req, res) => {
+  const user = await userService.updateEmail(req.user._id, req.body);
+  res.send(user);
+});
+
+const updatePassword = catchAsync(async (req, res) => {
+  const user = await userService.updatePassword(req.user._id, req.body);
+  res.send(user);
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
   res.send(user);
@@ -64,4 +79,7 @@ module.exports = {
   roleUser,
   updateUser,
   deleteUser,
+  updateMe,
+  updateEmail,
+  updatePassword,
 };

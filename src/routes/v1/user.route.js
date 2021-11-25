@@ -11,8 +11,12 @@ router
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
 
-router.get('/me', auth('getUsers'), userController.getMe);
 router.get('/roles', auth('getUsers'), userController.roleUser);
+
+router.get('/me', auth('user'), userController.getMe);
+router.put('/update-infomation', auth('user'), validate(userValidation.updateMe), userController.updateMe);
+router.put('/update-email', auth('user'),validate(userValidation.updateEmail), userController.updateEmail);
+router.put('/update-password', auth('user'),validate(userValidation.updatePassword), userController.updatePassword);
 
 router
   .route('/:userId')

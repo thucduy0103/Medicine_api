@@ -65,6 +65,35 @@ const updateUserById = async (userId, updateBody) => {
   return user;
 };
 
+const updateEmail = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+  }
+  if (!(await user.isPasswordMatch(updateBody.password))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect password');
+  }
+  Object.assign(user, updateBody);
+  await user.save();
+  return user;
+};
+
+const updatePassword = async (userId, updateBody) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  if (!(await user.isPasswordMatch(updateBody.oldPassword))) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect password');
+  }
+  Object.assign(user, updateBody);
+  await user.save();
+  return user;
+};
+
 /**
  * Delete user by id
  * @param {ObjectId} userId
@@ -86,4 +115,6 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  updateEmail,
+  updatePassword
 };

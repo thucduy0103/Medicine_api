@@ -5,7 +5,7 @@ const createUser = {
   body: Joi.object().keys({
     name: Joi.string().required(),
     address: Joi.string().required(),
-    phone: Joi.string().required(),
+    phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     roleId: Joi.number().required().valid(0, 1),
@@ -37,7 +37,7 @@ const updateUser = {
     .keys({
       name: Joi.string().required(),
       address: Joi.string().required(),
-      phone: Joi.string().required(),
+      phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
       roleId: Joi.number().required().valid(0, 1),
       roleName: Joi.string().required().valid('user', 'admin'),
     })
@@ -50,10 +50,39 @@ const deleteUser = {
   }),
 };
 
+const updateMe = {
+  body: Joi.object()
+    .keys({
+      name: Joi.string().required(),
+      address: Joi.string().required(),
+      phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
+    })
+    .min(1),
+};
+
+const updateEmail = {
+  body: Joi.object()
+    .keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required().custom(password),
+    }),
+};
+
+const updatePassword = {
+  body: Joi.object()
+    .keys({
+      oldPassword: Joi.string().required().custom(password),
+      password: Joi.string().required().custom(password),
+    }),
+};
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  updateMe,
+  updateEmail,
+  updatePassword
 };
