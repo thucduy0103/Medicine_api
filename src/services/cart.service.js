@@ -25,6 +25,11 @@ const queryCarts = async (filter, options) => {
   return Carts;
 };
 
+const countCarts = async (userId) => {
+  const Count = await Cart.countDocuments({userId:userId});
+  return Count;
+};
+
 const queryCart = async (filter) => {
   const cart = await Cart.findOne(filter);
   return cart;
@@ -80,6 +85,7 @@ const deleteCartById = async (CartId) => {
 module.exports = {
   createCart,
   queryCarts,
+  countCarts,
   queryCart,
   getCartById,
   getCartByIds,

@@ -12,6 +12,12 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    address: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
@@ -44,11 +50,7 @@ const userSchema = mongoose.Schema(
     roleId: {
       type: Number,
       default: 1,
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
+    }
   },
   {
     timestamps: true,
