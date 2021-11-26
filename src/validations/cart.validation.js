@@ -32,12 +32,11 @@ const searchCart = {
 };
 
 const updateCart = {
-  params: Joi.object().keys({
+  query: Joi.object().keys({
     CartId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
-        productId: Joi.string(),
         quantity: Joi.number()
     })
     .min(1),

@@ -12,7 +12,6 @@ const createCart = catchAsync(async (req, res) => {
   if (cart) {
     cart.quantity = cart.quantity + req.body.quantity
     cart.priceTotal = cart.priceTotal + cart.price * req.body.quantity
-    console.log(cart);
     const Cart = await cartService.updateCartById(cart.id,cart);
     res.status(httpStatus.CREATED).send(Cart);
   }else{
@@ -65,6 +64,7 @@ const searchCart = catchAsync(async (req, res) => {
 });
 
 const updateCart = catchAsync(async (req, res) => {
+  console.log(req.query.CartId);
   const Cart = await cartService.updateCartById(req.query.CartId, req.body);
   res.send(Cart);
 });

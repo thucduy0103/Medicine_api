@@ -7,14 +7,22 @@ const changeSlug = require('../utils/changeSlug');
 
 const createOrder = catchAsync(async (req, res) => {
   const cart = await cartService.getCartByIds(req.body.cartIds);
+  var array = cart.map(item => item.priceTotal)
+  const totalAmount = array.reduce(function(a, b) { return a + b; }, 0)
+  console.log(totalAmount);
+  // array.forEach(element => {
+  //   totalAmount + element
+  // });
   var order = req.body;
   order.listCart = cart
   order.userId = req.user._id;
-  order.shippingCode = 'Chưa cập nhật'
-  order.shippingUnit = 'Chưa cập nhật'
-  order.orderStatus = 1
+  order.totalAmount = totalAmount
+  order.shippingTotal = 0
+  order.shippingCode = ''
+  order.shippingUnit = 'Chưa xác nhận'
+  order.orderStatus = "Unconfirm"
   order.orderStatusString = 'Đơn hàng mới, đang chờ xử lý'
-    console.log(order);
+  // console.log(order);
   const Order = await orderService.createOrder(order);
   // var orderResponse = Order.toObject()
   // orderResponse.id = Order._id.toString()

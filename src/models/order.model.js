@@ -27,14 +27,21 @@ const orderSchema = mongoose.Schema(
       required: true,
     },
     shippingCode: {
-        type: String,
-        required: true,
+        type: String
     },
     shippingUnit: {
         type: String,
         required: true,
     },
+    shippingTotal: {
+      type: Number,
+      required: true,
+    },
     orderStatus: {
+      type: String,
+      required: true,
+    },
+    totalAmount: {
         type: Number,
         required: true,
     },

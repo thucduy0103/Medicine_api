@@ -6,7 +6,7 @@ const orderController = require('../../controllers/order.controller');
 
 const router = express.Router();
 
-router.get('/',auth('createOrder'), validate(orderValidation.getOrders), orderController.getOrders);
+router.get('/',auth('manageOrders'), validate(orderValidation.getOrders), orderController.getOrders);
 
 // router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderBySlug), orderController.getOrderBySlug);
 

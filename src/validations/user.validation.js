@@ -54,8 +54,8 @@ const updateMe = {
   body: Joi.object()
     .keys({
       name: Joi.string().required(),
-      address: Joi.string().required(),
-      phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
+      address: Joi.string().allow(null,''),
+      phone: Joi.string().allow(null, '').length(10).pattern(/^[0-9]+$/),
     })
     .min(1),
 };
