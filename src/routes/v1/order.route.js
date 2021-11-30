@@ -8,6 +8,9 @@ const router = express.Router();
 
 router.get('/',auth('manageOrders'), validate(orderValidation.getOrders), orderController.getOrders);
 
+router.put('/confirm/:orderId',auth('manageOrders'), validate(orderValidation.confirmOrders), orderController.confirmOrder);
+router.post('/success/:orderId',auth('manageOrders'), validate(orderValidation.getOrderById), orderController.successOrder);
+
 // router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderBySlug), orderController.getOrderBySlug);
 
 router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderById), orderController.getOrderById);

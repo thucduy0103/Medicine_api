@@ -35,9 +35,10 @@ const createOrder = catchAsync(async (req, res) => {
 });
 
 const getOrders = catchAsync(async (req, res) => {
-    // console.log(req.user)
-  let filter = pick(req.user._id, ['_id']);
+  // let filter = pick(req.user._id, ['_id']);
+  let filter = {userId:req.user._id};
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  console.log(filter)
   const result = await orderService.queryOrders(filter, options);
   res.send(result);
 });
@@ -73,6 +74,34 @@ const updateOrder = catchAsync(async (req, res) => {
   res.send(Order);
 });
 
+const confirmOrder = catchAsync(async (req, res) => {
+  const Order = await orderService.getOrderById(req.params.orderId);
+  if (!Order) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
+  }
+  Order.shippingCode = req.body.shippingCode
+  Order.shippingTotal = req.body.shippingTotal
+  Order.shippingUnit = 'Đã xác nhận'
+  Order.orderStatus = "Confirm"
+  Order.orderStatusString = 'Đơn hàng đã xác nhận, đang chờ vận chuyển'
+
+  const OrderResult = await orderService.updateOrderById(req.params.orderId, Order);
+  res.send(OrderResult);
+});
+
+const successOrder = catchAsync(async (req, res) => {
+  const Order = await orderService.getOrderById(req.params.orderId);
+  if (!Order) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
+  }
+  Order.shippingUnit = 'Thành công'
+  Order.orderStatus = "Success"
+  Order.orderStatusString = 'Đơn hàng đã hoàn tất'
+
+  const OrderResult = await orderService.updateOrderById(req.params.OrderId, Order);
+  res.send(OrderResult);
+});
+
 const deleteOrder = catchAsync(async (req, res) => {
   await orderService.deleteOrderById(req.query.orderId);
   res.status(httpStatus.NO_CONTENT).send();
@@ -86,4 +115,6 @@ module.exports = {
   searchOrder,
   updateOrder,
   deleteOrder,
+  confirmOrder,
+  successOrder,
 };

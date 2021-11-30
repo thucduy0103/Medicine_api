@@ -53,6 +53,18 @@ const updateOrder = {
     .min(1),
 };
 
+const confirmOrders = {
+  params: Joi.object().keys({
+    orderId: Joi.required().custom(objectId),
+  }),
+  body: Joi.object()
+    .keys({
+      shippingCode: Joi.string().required(),
+      shippingTotal: Joi.number().required(),
+    })
+    .min(1),
+};
+
 const deleteOrder = {
   params: Joi.object().keys({
     OrderId: Joi.string().custom(objectId),
@@ -67,4 +79,5 @@ module.exports = {
   searchOrder,
   updateOrder,
   deleteOrder,
+  confirmOrders,
 };

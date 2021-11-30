@@ -4,8 +4,8 @@ const { password, objectId } = require('./custom.validation');
 const createUser = {
   body: Joi.object().keys({
     name: Joi.string().required(),
-    address: Joi.string().required(),
-    phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
+    address: Joi.string().allow(null,''),
+    phone: Joi.string().allow(null,'').length(10).pattern(/^[0-9]+$/),
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     roleId: Joi.number().required().valid(0, 1),
@@ -36,8 +36,8 @@ const updateUser = {
   body: Joi.object()
     .keys({
       name: Joi.string().required(),
-      address: Joi.string().required(),
-      phone: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
+      address: Joi.string().allow(null,''),
+      phone: Joi.string().allow(null,'').length(10).pattern(/^[0-9]+$/),
       roleId: Joi.number().required().valid(0, 1),
       roleName: Joi.string().required().valid('user', 'admin'),
     })
