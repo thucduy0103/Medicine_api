@@ -25,6 +25,7 @@ const getProductBySlug = catchAsync(async (req, res) => {
   if (!Product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
   }
+  productService.countProduct(Product.id)
   res.send(Product);
 });
 
@@ -33,6 +34,7 @@ const getProductById = catchAsync(async (req, res) => {
   if (!Product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
   }
+  await productService.countProduct(Product.id)
   res.send(Product);
 });
 
@@ -141,11 +143,19 @@ const updateCrawl = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(Product);
 });
 
+const getRecommendProducts = catchAsync(async (req, res) => {
+  var options = pick(req.query, ['limit', 'page']);
+  options['sortBy'] = '-viewed'
+  const result = await productService.queryProducts({},options);
+  res.send(result);
+});
+
 module.exports = {
   createProduct,
   getProducts,
   getProductBySlug,
   getProductById,
+  getRecommendProducts,
   searchProduct,
   updateProduct,
   deleteProduct,

@@ -6,12 +6,11 @@ const { cartService, productService } = require('../services');
 const changeSlug = require('../utils/changeSlug');
 
 const createCart = catchAsync(async (req, res) => {
-
   let filter = {userId:req.user._id,productId:req.body.productId};
   const cart = await cartService.queryCart(filter)
   if (cart) {
-    cart.quantity = cart.quantity + req.body.quantity
-    cart.priceTotal = cart.priceTotal + cart.price * req.body.quantity
+    cart.quantity = await cart.quantity + req.body.quantity
+    cart.priceTotal = await cart.priceTotal + cart.price * req.body.quantity
     const Cart = await cartService.updateCartById(cart.id,cart);
     res.status(httpStatus.CREATED).send(Cart);
   }else{

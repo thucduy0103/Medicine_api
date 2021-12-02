@@ -15,6 +15,8 @@ router.post('/success/:orderId',auth('manageOrders'), validate(orderValidation.g
 
 router.get('/get-order',auth('createOrder'), validate(orderValidation.getOrderById), orderController.getOrderById);
 
+router.post('/cancel-order',auth('createOrder'), validate(orderValidation.deleteOrder), orderController.cancelOrder);
+
 router.get('/search-order', validate(orderValidation.searchOrder), orderController.searchOrder);
 
 router.post('/create', auth('createOrder'), validate(orderValidation.createOrder), orderController.createOrder);

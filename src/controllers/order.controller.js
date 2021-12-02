@@ -9,10 +9,7 @@ const createOrder = catchAsync(async (req, res) => {
   const cart = await cartService.getCartByIds(req.body.cartIds);
   var array = cart.map(item => item.priceTotal)
   const totalAmount = array.reduce(function(a, b) { return a + b; }, 0)
-  console.log(totalAmount);
-  // array.forEach(element => {
-  //   totalAmount + element
-  // });
+  // console.log(totalAmount);
   var order = req.body;
   order.listCart = cart
   order.userId = req.user._id;
@@ -24,13 +21,7 @@ const createOrder = catchAsync(async (req, res) => {
   order.orderStatusString = 'Đơn hàng mới, đang chờ xử lý'
   // console.log(order);
   const Order = await orderService.createOrder(order);
-  // var orderResponse = Order.toObject()
-  // orderResponse.id = Order._id.toString()
-  // Reflect.deleteProperty(orderResponse, "createdAt")
-  // Reflect.deleteProperty(orderResponse, "updatedAt")
-  // Reflect.deleteProperty(orderResponse, "_id")
-  // orderResponse["listCart"] = cart
-  // console.log(orderResponse);
+  await cartService.deleteCartByIds(req.body.cartIds);
   res.status(httpStatus.CREATED).send(Order);
 });
 
@@ -38,7 +29,13 @@ const getOrders = catchAsync(async (req, res) => {
   // let filter = pick(req.user._id, ['_id']);
   let filter = {userId:req.user._id};
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  console.log(filter)
+  const result = await orderService.queryOrders(filter, options);
+  res.send(result);
+});
+
+const getAllOrders = catchAsync(async (req, res) => {
+  let filter = pick(req.user._id, ['_id']);
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await orderService.queryOrders(filter, options);
   res.send(result);
 });
@@ -107,14 +104,26 @@ const deleteOrder = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const cancelOrder = catchAsync(async (req, res) => {
+  const Order = await orderService.getOrderById(req.body.orderId);
+  if(Order.orderStatus =="Unconfirm"){
+    await orderService.deleteOrderById(req.query.orderId);
+    res.status(httpStatus.NO_CONTENT).send("Xoá thành công");
+  }else{
+    res.status(httpStatus.NO_CONTENT).send("Không xoá được đơn hàng");
+  }
+});
+
 module.exports = {
   createOrder,
   getOrders,
+  getAllOrders,
   getOrderBySlug,
   getOrderById,
   searchOrder,
   updateOrder,
   deleteOrder,
+  cancelOrder,
   confirmOrder,
   successOrder,
 };

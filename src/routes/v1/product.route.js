@@ -13,6 +13,8 @@ const router = express.Router();
 
 router.get('/', validate(productValidation.getProducts), productController.getProducts);
 
+router.get('/recommend',validate(productValidation.getProducts), productController.getRecommendProducts);
+
 router.get('/get-product', validate(productValidation.getProductBySlug), productController.getProductBySlug);
 
 router.get('/get-product-by-id', validate(productValidation.getProductById), productController.getProductById);

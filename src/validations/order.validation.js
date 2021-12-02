@@ -66,8 +66,8 @@ const confirmOrders = {
 };
 
 const deleteOrder = {
-  params: Joi.object().keys({
-    OrderId: Joi.string().custom(objectId),
+  body: Joi.object().keys({
+    orderId: Joi.string().custom(objectId),
   }),
 };
 

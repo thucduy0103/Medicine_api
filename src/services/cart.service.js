@@ -82,6 +82,10 @@ const deleteCartById = async (CartId) => {
   return Cart;
 };
 
+const deleteCartByIds = async (CartIds) => {
+  await Cart.deleteMany({ _id: CartIds })
+};
+
 module.exports = {
   createCart,
   queryCarts,
@@ -92,4 +96,5 @@ module.exports = {
   getCartBySlug,
   updateCartById,
   deleteCartById,
+  deleteCartByIds
 };

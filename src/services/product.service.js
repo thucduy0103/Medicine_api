@@ -38,6 +38,16 @@ const getProductBySlug = async (slug) => {
   return Product.findOne({slug:slug});
 };
 
+const countProduct = async (ProductId) => {
+  const Product = await getProductById(ProductId);
+  if (!Product) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  const count = {viewed : Product.viewed+1}
+  Object.assign(Product, count);
+  await Product.save();
+};
+
 /**
  * Update Product by id
  * @param {ObjectId} ProductId
@@ -75,4 +85,5 @@ module.exports = {
   getProductBySlug,
   updateProductById,
   deleteProductById,
+  countProduct,
 };
