@@ -3,10 +3,24 @@ const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
 
-let server;
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server,{
+  "cors": {
+      "origin": '*',
+  }
+});
+const onConnection = (socket) => {
+  require('./socket/socket.service')(socket);
+}
+
+io.on("connection", onConnection);
+
+// let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
   logger.info('Connected to MongoDB');
-  server = app.listen(config.port, () => {
+    server.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });
 });

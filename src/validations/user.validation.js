@@ -6,6 +6,7 @@ const createUser = {
     name: Joi.string().required(),
     address: Joi.string().allow(null,''),
     phone: Joi.string().allow(null,'').length(10).pattern(/^[0-9]+$/),
+    avatar: Joi.string().allow(null,''),
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     roleId: Joi.number().required().valid(0, 1),
@@ -56,6 +57,7 @@ const updateMe = {
       name: Joi.string().required(),
       address: Joi.string().allow(null,''),
       phone: Joi.string().allow(null, '').length(10).pattern(/^[0-9]+$/),
+      avatar: Joi.string().required(),
     })
     .min(1),
 };

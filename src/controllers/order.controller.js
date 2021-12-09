@@ -78,8 +78,21 @@ const confirmOrder = catchAsync(async (req, res) => {
   Order.shippingCode = req.body.shippingCode
   Order.shippingTotal = req.body.shippingTotal
   Order.shippingUnit = 'Đã xác nhận'
-  Order.orderStatus = "Shipping"
+  Order.orderStatus = "Confirm"
   Order.orderStatusString = 'Đơn hàng đã xác nhận, đang chờ vận chuyển'
+
+  const OrderResult = await orderService.updateOrderById(req.params.orderId, Order);
+  res.send(OrderResult);
+});
+
+const shippingOrder = catchAsync(async (req, res) => {
+  const Order = await orderService.getOrderById(req.params.orderId);
+  if (!Order) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
+  }
+  Order.shippingUnit = 'Đang vận chuyển'
+  Order.orderStatus = "Shipping"
+  Order.orderStatusString = 'Đơn hàng đang vận chuyển'
 
   const OrderResult = await orderService.updateOrderById(req.params.orderId, Order);
   res.send(OrderResult);
@@ -125,4 +138,5 @@ module.exports = {
   cancelOrder,
   confirmOrder,
   successOrder,
+  shippingOrder
 };

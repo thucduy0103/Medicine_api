@@ -30,6 +30,10 @@ const userSchema = mongoose.Schema(
         }
       },
     },
+    avatar: {
+      type: String,
+      default: 'https://iupac.org/wp-content/uploads/2018/05/default-avatar.png',
+    },
     password: {
       type: String,
       required: true,
