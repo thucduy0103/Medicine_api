@@ -18,6 +18,8 @@ router.put('/update-infomation', auth('user'), validate(userValidation.updateMe)
 router.put('/update-email', auth('user'),validate(userValidation.updateEmail), userController.updateEmail);
 router.put('/update-password', auth('user'),validate(userValidation.updatePassword), userController.updatePassword);
 
+router.get('/message', auth('user'), userController.getMessage);
+
 router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)

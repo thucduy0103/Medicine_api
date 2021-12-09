@@ -32,6 +32,10 @@ const getMe = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const getMessage = catchAsync(async (req, res) => {
+  res.send("user");
+});
+
 const roleUser = catchAsync(async (req, res) => {
   const role = [
     {
@@ -76,6 +80,7 @@ module.exports = {
   getUsers,
   getUser,
   getMe,
+  getMessage,
   roleUser,
   updateUser,
   deleteUser,

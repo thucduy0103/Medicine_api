@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const changeToSlug = require('../utils/changeSlug');
-const { toJSON, paginate } = require('./plugins');
+const { toJSONFull, paginate } = require('./plugins');
 
 const orderSchema = mongoose.Schema(
   {
@@ -57,7 +57,7 @@ const orderSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-orderSchema.plugin(toJSON);
+orderSchema.plugin(toJSONFull);
 orderSchema.plugin(paginate);
 
 /**

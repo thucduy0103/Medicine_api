@@ -63,8 +63,11 @@ const searchCart = catchAsync(async (req, res) => {
 });
 
 const updateCart = catchAsync(async (req, res) => {
-  console.log(req.query.CartId);
-  const Cart = await cartService.updateCartById(req.query.CartId, req.body);
+  // console.log(req.query.CartId);
+  var cart = await cartService.getCartById(req.query.CartId)
+  cart.quantity = req.body.quantity
+  cart.priceTotal = cart.price * req.body.quantity
+  const Cart = await cartService.updateCartById(req.query.CartId, cart);
   res.send(Cart);
 });
 

@@ -34,9 +34,8 @@ const getOrders = catchAsync(async (req, res) => {
 });
 
 const getAllOrders = catchAsync(async (req, res) => {
-  let filter = pick(req.user._id, ['_id']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await orderService.queryOrders(filter, options);
+  const result = await orderService.queryOrders({}, options);
   res.send(result);
 });
 
@@ -79,7 +78,7 @@ const confirmOrder = catchAsync(async (req, res) => {
   Order.shippingCode = req.body.shippingCode
   Order.shippingTotal = req.body.shippingTotal
   Order.shippingUnit = 'Đã xác nhận'
-  Order.orderStatus = "Confirm"
+  Order.orderStatus = "Shipping"
   Order.orderStatusString = 'Đơn hàng đã xác nhận, đang chờ vận chuyển'
 
   const OrderResult = await orderService.updateOrderById(req.params.orderId, Order);
@@ -92,10 +91,10 @@ const successOrder = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
   }
   Order.shippingUnit = 'Thành công'
-  Order.orderStatus = "Success"
+  Order.orderStatus = "Complete"
   Order.orderStatusString = 'Đơn hàng đã hoàn tất'
 
-  const OrderResult = await orderService.updateOrderById(req.params.OrderId, Order);
+  const OrderResult = await orderService.updateOrderById(req.params.orderId, Order);
   res.send(OrderResult);
 });
 
