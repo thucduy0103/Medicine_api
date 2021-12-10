@@ -12,20 +12,20 @@ router.get('/',auth('createOrder'), validate(cartValidation.getCarts), cartContr
 
 router.get('/get-cart',auth('createOrder'), validate(cartValidation.getCartById), cartController.getCartById);
 
-router.get('/search-cart', validate(cartValidation.searchCart), cartController.searchCart);
+router.get('/search-cart',auth('createOrder'), validate(cartValidation.searchCart), cartController.searchCart);
 
 router.post('/create', auth('createOrder'), validate(cartValidation.createCart), cartController.createCart);
 
 router.put(
   '/update-cart',
-  auth('manageOrders'),
+  auth('createOrder'),
   validate(cartValidation.updateCart),
   cartController.updateCart
 );
 
 router.delete(
   '/delete-cart',
-  auth('manageOrders'),
+  auth('createOrder'),
   validate(cartValidation.deleteCart),
   cartController.deleteCart
 );
