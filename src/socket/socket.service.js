@@ -15,11 +15,11 @@ module.exports = (socket) => {
   const chatText = (data) => {
     // console.log(data);
     socket.to(data.roomId).emit("res_chat_text",data);
-    Message.create(data);
+    // Message.create(data);
   } 
   const chatImage = (data) => {
     socket.to(data.roomId).emit("res_chat_image",data);
-    Message.create(data);
+    // Message.create(data);
   } 
   socket.on("join_room", joinRoom);
   socket.on("leave_room", leaveRoom);
