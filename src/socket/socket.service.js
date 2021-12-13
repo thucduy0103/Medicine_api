@@ -1,15 +1,26 @@
 const Message = require('../models/message.model');
+const Room = require('../models/room.model');
+const User = require('../models/user.model');
 
 module.exports = (socket) => {
 
-  const joinRoom = (data) => {
-    // console.log(data);
+  const joinRoom = async (data) => {
     socket.leave(socket.id);
-    socket.join(data.roomId);
+    const room = await Room.findOne({roomId: data.room}).exec()
+    if(!room){
+      const user = await User.findById(data.room).exec()
+      const newRoom = {
+        roomId : data.room,
+        roomName : user.name,
+        roomAvatar : user.avatar,
+      }
+      Room.create(newRoom)
+    }
+    socket.join(data.room);
   } 
 
   const leaveRoom = (data) => {
-    socket.leave(data.roomId);
+    socket.leave(data.room);
   } 
 
   const chatText = (data) => {

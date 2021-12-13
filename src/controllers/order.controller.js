@@ -118,8 +118,9 @@ const deleteOrder = catchAsync(async (req, res) => {
 
 const cancelOrder = catchAsync(async (req, res) => {
   const Order = await orderService.getOrderById(req.body.orderId);
+  // console.log(Order);
   if(Order.orderStatus =="Unconfirm"){
-    await orderService.deleteOrderById(req.query.orderId);
+    await orderService.deleteOrderById(req.body.orderId);
     res.status(httpStatus.NO_CONTENT).send("Xoá thành công");
   }else{
     res.status(httpStatus.NO_CONTENT).send("Không xoá được đơn hàng");

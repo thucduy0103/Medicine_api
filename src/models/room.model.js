@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 const changeToSlug = require('../utils/changeSlug');
 const { toJSON, paginate } = require('./plugins');
 
-const messageSchema = mongoose.Schema(
+const roomSchema = mongoose.Schema(
   {
     roomId: {
       type: String,
       required: true,
     },
-    senderId: {
+    roomName: {
       type: String,
       required: true,
     },
-    message: {
+    roomAvatar: {
       type: String,
       required: true,
     },
-    image: {
-      type: String,
-    },
+    lastMessage: {
+      type: String
+    }
   },
   {
     timestamps: true,
@@ -27,12 +27,12 @@ const messageSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-messageSchema.plugin(toJSON);
-messageSchema.plugin(paginate);
+roomSchema.plugin(toJSON);
+roomSchema.plugin(paginate);
 
 /**
- * @typedef Message
+ * @typedef Room
  */
-const Message = mongoose.model('Message', messageSchema);
+const Room = mongoose.model('Room', roomSchema);
 
-module.exports = Message;
+module.exports = Room;
