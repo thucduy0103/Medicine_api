@@ -5,10 +5,17 @@ const User = require('../models/user.model');
 module.exports = (socket) => {
 
   const joinRoom = async (data) => {
+    if (!data.room.match(/^[0-9a-fA-F]{24}$/)) {
+      return 
+    }
     socket.leave(socket.id);
     const room = await Room.findOne({roomId: data.room}).exec()
     if(!room){
       const user = await User.findById(data.room).exec()
+      console.log(user);
+      if(!user){
+        return
+      }
       const newRoom = {
         roomId : data.room,
         roomName : user.name,
