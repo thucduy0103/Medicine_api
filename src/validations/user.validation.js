@@ -55,10 +55,10 @@ const deleteUser = {
 const updateMe = {
   body: Joi.object()
     .keys({
-      name: Joi.string().required(),
+      name: Joi.string().allow(null,''),
       address: Joi.string().allow(null,''),
       phone: Joi.string().allow(null, '').length(10).pattern(/^[0-9]+$/),
-      avatar: Joi.string().required(),
+      avatar: Joi.string().allow(null,''),
     })
     .min(1),
 };
