@@ -50,6 +50,35 @@ const roleUser = catchAsync(async (req, res) => {
   res.send(role);
 });
 
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'images');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now().toString().concat(file.originalname));
+    }
+  });
+const upload = multer({ storage: storage }).single('image');
+
+const uploadImage = function(req, res) {
+  // const user = await userService.updateUserById(req.user._id, req.body);
+  // res.send(user);
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      // A Multer error occurred when uploading.
+        console.log(err);
+      return res.status(500).json({status:500,data:err,message:"error"});
+    } else if (err) {
+        console.log(err);
+      // An unknown error occurred when uploading.
+      return res.status(500).json({status:500,data:err,message:"error"});
+    }
+    //console.log(req.file); 
+    return res.status(200).json({status:200,data:req.file.filename,message:"success"});
+  })
+};
+
 const updateMe = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.user._id, req.body);
   res.send(user);
@@ -84,6 +113,7 @@ module.exports = {
   roleUser,
   updateUser,
   deleteUser,
+  uploadImage,
   updateMe,
   updateEmail,
   updatePassword,

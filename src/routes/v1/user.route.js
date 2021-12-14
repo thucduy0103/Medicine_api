@@ -14,6 +14,7 @@ router
 router.get('/roles', auth('getUsers'), userController.roleUser);
 
 router.get('/me', auth('user'), userController.getMe);
+router.post('/upload-image', auth('user'), userController.uploadImage);
 router.put('/update-infomation', auth('user'), validate(userValidation.updateMe), userController.updateMe);
 router.put('/update-email', auth('user'),validate(userValidation.updateEmail), userController.updateEmail);
 router.put('/update-password', auth('user'),validate(userValidation.updatePassword), userController.updatePassword);

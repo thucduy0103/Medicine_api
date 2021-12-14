@@ -39,6 +39,7 @@ const updateUser = {
       name: Joi.string().required(),
       address: Joi.string().allow(null,''),
       phone: Joi.string().allow(null,'').length(10).pattern(/^[0-9]+$/),
+      avatar: Joi.string().allow(null,''),
       roleId: Joi.number().required().valid(0, 1),
       roleName: Joi.string().required().valid('user', 'admin'),
     })
