@@ -4,36 +4,37 @@ const User = require('../models/user.model');
 
 module.exports = (socket) => {
 
-  const joinRoom = async (data) => {
-    // if (!data.room.match(/^[0-9a-fA-F]{24}$/)) {
-    //   return 
-    // }
-    // socket.leave(socket.id);
-    // const room = await Room.findOne({roomId: data.room}).exec()
-    // if(!room){
-    //   const user = await User.findById(data.room).exec()
-    //   console.log(user);
-    //   if(!user){
-    //     return
-    //   }
-    //   const newRoom = {
-    //     roomId : data.room,
-    //     roomName : user.name,
-    //     roomAvatar : user.avatar,
-    //   }
-    //   Room.create(newRoom)
-    // }
+  const joinRoom = (data) => {
     socket.join(data.room);
+    socket.leave(socket.id);
   } 
 
   const leaveRoom = (data) => {
     socket.leave(data.room);
   } 
 
-  const chatText = (data) => {
+  const chatText = async (data) => {
     // console.log(data);
     socket.to(data.roomId).emit("res_chat_text",data);
-    // Message.create(data);
+    if (!data.roomId.match(/^[0-9a-fA-F]{24}$/)) {
+      return 
+    }
+    const room = await Room.findOne({roomId: data.roomId}).exec()
+    if(!room){
+      // console.log(data.roomId);
+      const user = await User.findById(data.roomId).exec()
+      if(!user){
+        return
+      }
+      const newRoom = {
+        roomId : data.roomId,
+        roomName : user.name,
+        roomAvatar : user.avatar,
+      }
+      Room.create(newRoom)
+      socket.emit("new_room",newRoom);
+    }
+    Message.create(data);
   } 
   const chatImage = (data) => {
     socket.to(data.roomId).emit("res_chat_image",data);

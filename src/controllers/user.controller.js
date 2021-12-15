@@ -80,6 +80,9 @@ const uploadImage = function(req, res) {
 };
 
 const updateMe = catchAsync(async (req, res) => {
+  if(req.body.avatar ===''){
+    req.body.avatar = "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png"
+  }
   const user = await userService.updateUserById(req.user._id, req.body);
   res.send(user);
 });

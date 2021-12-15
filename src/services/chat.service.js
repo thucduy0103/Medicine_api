@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Chat } = require('../models');
+const { Chat,Message } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -31,8 +31,9 @@ const queryChats = async (filter, options) => {
  * @param {ObjectId} id
  * @returns {Promise<Chat>}
  */
-const getChatById = async (id) => {
-  return Chat.findById(id);
+const getChatById = async (filter, options) => {
+  const list = await Message.paginate(filter, options);
+  return list;
 };
 
 

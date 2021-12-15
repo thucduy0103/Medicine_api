@@ -5,3 +5,4 @@ module.exports.Order = require('./order.model');
 module.exports.Cart = require('./cart.model');
 module.exports.Category = require('./categoty.model');
 module.exports.Chat = require('./room.model');
+module.exports.Message = require('./message.model');

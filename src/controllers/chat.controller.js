@@ -17,11 +17,10 @@ const getChats = catchAsync(async (req, res) => {
 });
 
 const getChat = catchAsync(async (req, res) => {
-  const Chat = await chatService.getChatById(req.params.chatId);
-  if (!Chat) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Chat not found');
-  }
-  res.send(Chat);
+  const filter = {roomId:req.params.chatId};
+  const options = pick(req.query, ['sortBy', 'limit', 'page']);
+  const result = await chatService.getChatById(filter, options);
+  res.send(result);
 });
 
 const updateChat = catchAsync(async (req, res) => {
