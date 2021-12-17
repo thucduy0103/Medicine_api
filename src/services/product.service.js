@@ -25,6 +25,11 @@ const queryProducts = async (filter, options) => {
   return Products;
 };
 
+const getProducts = async (array) => {
+  const Products = await Product.find().where('category').in(array).exec();
+  return Products;
+};
+
 /**
  * Get Product by id
  * @param {ObjectId} id
@@ -78,12 +83,19 @@ const deleteProductById = async (ProductId) => {
   return Product;
 };
 
+const exportProducts = async () => {
+  const Products = await Product.find();
+  return Products;
+};
+
 module.exports = {
   createProduct,
   queryProducts,
+  getProducts,
   getProductById,
   getProductBySlug,
   updateProductById,
   deleteProductById,
   countProduct,
+  exportProducts
 };

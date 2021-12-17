@@ -2,8 +2,11 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { productService } = require('../services');
+const { productService, categoryService } = require('../services');
 const changeSlug = require('../utils/changeSlug')
+
+const memjs = require('memjs')
+const memcached = memjs.Client.create()
 
 const createProduct = catchAsync(async (req, res) => {
   const Product = await productService.createProduct(req.body);
@@ -48,6 +51,21 @@ const searchProduct = catchAsync(async (req, res) => {
   res.send(Product);
 });
 
+const homePageProduct = catchAsync(async (req, res) => {
+
+  const listCategory = await categoryService.getHomePageCategories();
+  for (const iterator of listCategory) {
+    iterator.listProducts = await productService.getProducts(iterator["slug"])
+  }
+  await memcached.set('home-page', JSON.stringify(listCategory), { expires: 12 });
+  res.send(listCategory);
+});
+
+const clearHomePageProduct = catchAsync(async (req, res) => {
+  await memcached.delete('home-page');
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
 const updateProduct = catchAsync(async (req, res) => {
   const Product = await productService.updateProductById(req.params.productId, req.body);
   res.send(Product);
@@ -66,6 +84,11 @@ const getcategories = catchAsync(async (req, res) => {
     data.push(item);
   }
   res.json({ results: data });
+});
+
+const exportExcel = catchAsync(async (req, res) => {
+  const Product = await productService.exportProducts();
+  res.send(Product);
 });
 
 const createCrawl = catchAsync(async (req, res) => {
@@ -157,9 +180,12 @@ module.exports = {
   getProductById,
   getRecommendProducts,
   searchProduct,
+  homePageProduct,
+  clearHomePageProduct,
   updateProduct,
   deleteProduct,
   getcategories,
+  exportExcel,
   createCrawl,
   updateCrawl,
 };

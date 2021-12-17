@@ -5,8 +5,8 @@ const createCategory = {
   body: Joi.object().keys({
     name: Joi.string().required(),
     slug: Joi.string(),
-    image: Joi.string(),
-    isActive: Joi.boolean(),
+    image: Joi.string().allow(null,''),
+    isShowHome: Joi.boolean().allow(null,''),
   }),
 };
 
@@ -35,9 +35,15 @@ const updateCategory = {
       name: Joi.string().required(),
       slug: Joi.string(),
       image: Joi.string(),
-      isActive: Joi.boolean(),
+      isShowHome: Joi.boolean(),
     })
     .min(1),
+};
+
+const isShowCategory = {
+  params: Joi.object().keys({
+    categoryId: Joi.required().custom(objectId),
+  })
 };
 
 const deleteCategory = {
@@ -51,5 +57,6 @@ module.exports = {
   getCategories,
   getCategory,
   updateCategory,
+  isShowCategory,
   deleteCategory,
 };

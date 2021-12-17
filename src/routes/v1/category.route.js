@@ -26,6 +26,13 @@ router.put(
   categoryController.updateCategory
 );
 
+router.put(
+  '/isShow/:categoryId',
+  auth('managecategories'),
+  validate(categoryValidation.isShowCategory),
+  categoryController.isShowCategory
+);
+
 router.delete(
   '/delete/:categoryId',
   auth('managecategories'),

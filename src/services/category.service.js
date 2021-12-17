@@ -29,6 +29,11 @@ const queryCategories = async (filter, options) => {
   return Categories;
 };
 
+const getHomePageCategories = async () => {
+  const Categories = await Category.find({isShowHome: true});
+  return Categories;
+};
+
 /**
  * Get Category by id
  * @param {ObjectId} id
@@ -54,6 +59,17 @@ const updateCategoryById = async (CategoryId, updateBody) => {
   return Category;
 };
 
+const isShowCategoryById = async (CategoryId) => {
+  const Category = await getCategoryById(CategoryId);
+  if (!Category) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
+  }
+  // Object.assign(Category, updateBody);
+  Category.isShowHome = !Category.isShowHome
+  await Category.save();
+  return Category;
+};
+
 /**
  * Delete Category by id
  * @param {ObjectId} CategoryId
@@ -71,8 +87,10 @@ const deleteCategoryById = async (CategoryId) => {
 module.exports = {
   createCategory,
   queryCategories,
+  getHomePageCategories,
   getCategoryById,
   updateCategoryById,
+  isShowCategoryById,
   deleteCategoryById,
   createCategories,
 };

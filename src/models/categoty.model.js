@@ -18,11 +18,15 @@ const categorySchema = mongoose.Schema(
     image: {
       type: String,
       required: true,
-      trim: true,
     },
-    isActive: {
+    isShowHome: {
       type: Boolean,
       required: true,
+      default : false,
+    },
+    listProducts: {
+      type: Array,
+      required: false,
     },
   },
   {

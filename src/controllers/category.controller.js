@@ -6,6 +6,9 @@ const { categoryService } = require('../services');
 const changeToSlug = require('../utils/changeSlug');
 
 const createCategory = catchAsync(async (req, res) => {
+  if(req.body.image === null){
+    req.body.image = 'https://cdn-icons-png.flaticon.com/512/883/883407.png'
+  }
   const category = await categoryService.createCategory(req.body);
   res.status(httpStatus.CREATED).send(category);
 });
@@ -27,6 +30,11 @@ const getCategory = catchAsync(async (req, res) => {
 
 const updateCategory = catchAsync(async (req, res) => {
   const category = await categoryService.updateCategoryById(req.params.categoryId, req.body);
+  res.send(category);
+});
+
+const isShowCategory = catchAsync(async (req, res) => {
+  const category = await categoryService.isShowCategoryById(req.params.categoryId);
   res.send(category);
 });
 
@@ -53,6 +61,7 @@ module.exports = {
   getCategories,
   getCategory,
   updateCategory,
+  isShowCategory,
   deleteCategory,
   createCategories,
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
+const memcache = require('../../middlewares/memcache');
 const productValidation = require('../../validations/product.validation');
 const productController = require('../../controllers/product.controller');
 
@@ -21,6 +22,10 @@ router.get('/get-product-by-id', validate(productValidation.getProductById), pro
 
 router.get('/search-product', validate(productValidation.searchProduct), productController.searchProduct);
 
+router.get('/home-page',memcache, productController.homePageProduct);
+
+router.post('/home-page/clear',auth('admin'), productController.clearHomePageProduct);
+
 router.get('/categories', auth('manageProducts'), productController.getcategories);
 
 router.post('/', auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct);
@@ -38,6 +43,8 @@ router
 //   validate(productValidation.deleteProduct),
 //   productController.deleteProduct
 // );
+
+router.get('/exportExcel', auth('admin'), productController.exportExcel);
 
 router.post('/create-item', productController.createCrawl);
 
