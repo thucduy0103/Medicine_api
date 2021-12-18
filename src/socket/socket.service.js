@@ -5,17 +5,22 @@ const User = require('../models/user.model');
 module.exports = (socket) => {
 
   const joinRoom = (data) => {
-    socket.join(data.room);
+    socket.join(data.roomId);
     socket.leave(socket.id);
   } 
 
   const leaveRoom = (data) => {
     socket.leave(data.room);
-  } 
+  }
 
   const chatText = async (data) => {
-    // console.log(data);
-    socket.to(data.roomId).emit("res_chat_text",data);
+    if(data.senderId === 'admin'){
+      socket.to(data.roomId).emit("res_chat_text",data);
+      // console.log(data);
+    }else{
+      socket.to('admin').emit("res_chat_text",data);
+      // console.log(data);
+    }
     if (!data.roomId.match(/^[0-9a-fA-F]{24}$/)) {
       return 
     }

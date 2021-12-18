@@ -18,8 +18,10 @@ const getChats = catchAsync(async (req, res) => {
 
 const getChat = catchAsync(async (req, res) => {
   const filter = {roomId:req.params.chatId};
+  console.log(req.params.chatId);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await chatService.getChatById(filter, options);
+  // console.log(result);
   res.send(result);
 });
 
