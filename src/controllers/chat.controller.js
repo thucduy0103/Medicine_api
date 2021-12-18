@@ -3,6 +3,7 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { chatService } = require('../services');
+const Room = require('../models/room.model');
 
 const createChat = catchAsync(async (req, res) => {
   const Chat = await chatService.createChat(req.body);
@@ -22,6 +23,11 @@ const getChat = catchAsync(async (req, res) => {
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await chatService.getChatById(filter, options);
   // console.log(result);
+  const room = await Room.findOne({roomId:req.params.chatId})
+  if(room){
+    room.adminRead = true
+    room.save()
+  }
   res.send(result);
 });
 

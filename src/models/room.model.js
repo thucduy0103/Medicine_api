@@ -18,6 +18,10 @@ const roomSchema = mongoose.Schema(
     },
     lastMessage: {
       type: String
+    },
+    adminRead: {
+      type: Boolean,
+      default : true,
     }
   },
   {

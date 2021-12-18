@@ -41,6 +41,9 @@ module.exports = (socket) => {
       // console.log("new_room");
       Room.create(newRoom)
       socket.emit("new_room",newRoom);
+    }else{
+      room.adminRead = false
+      room.save()
     }
     Message.create(data);
   } 
