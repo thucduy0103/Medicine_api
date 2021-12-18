@@ -5,7 +5,8 @@ const User = require('../models/user.model');
 module.exports = (socket) => {
 
   const joinRoom = (data) => {
-    socket.join(data.roomId);
+    // console.log(data);
+    socket.join(data.room);
     socket.leave(socket.id);
   } 
 
@@ -21,9 +22,10 @@ module.exports = (socket) => {
       socket.to('admin').emit("res_chat_text",data);
       // console.log(data);
     }
-    if (!data.roomId.match(/^[0-9a-fA-F]{24}$/)) {
-      return 
-    }
+    // console.log(data);
+    // if (!data.roomId.match(/^[0-9a-fA-F]{24}$/)) {
+    //   return 
+    // }
     const room = await Room.findOne({roomId: data.roomId}).exec()
     if(!room){
       // console.log(data.roomId);
@@ -36,6 +38,7 @@ module.exports = (socket) => {
         roomName : user.name,
         roomAvatar : user.avatar,
       }
+      // console.log("new_room");
       Room.create(newRoom)
       socket.emit("new_room",newRoom);
     }
