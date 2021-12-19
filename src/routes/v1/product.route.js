@@ -44,7 +44,7 @@ router
 //   productController.deleteProduct
 // );
 
-router.get('/exportExcel', auth('admin'), productController.exportExcel);
+router.get('/exportExcel', productController.exportExcel);
 
 router.post('/create-item', productController.createCrawl);
 

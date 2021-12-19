@@ -43,6 +43,10 @@ const getCategoryById = async (id) => {
   return Category.findById(id);
 };
 
+const getCategoryBySlug = async (id) => {
+  return Category.findOne({slug:id});
+};
+
 /**
  * Update Category by id
  * @param {ObjectId} CategoryId
@@ -89,6 +93,7 @@ module.exports = {
   queryCategories,
   getHomePageCategories,
   getCategoryById,
+  getCategoryBySlug,
   updateCategoryById,
   isShowCategoryById,
   deleteCategoryById,

@@ -16,8 +16,11 @@ const createProduct = catchAsync(async (req, res) => {
 const getProducts = catchAsync(async (req, res) => {
   let filter = pick(req.query, ['']);
   if(req.query.category){
-    filter = pick(req.query, ['category']);
+    const category = await categoryService.getCategoryBySlug(req.query.category)
+    // filter = pick(req.query, ['category']);
+    filter = { category : category.id};
   } 
+  // console.log(filter);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await productService.queryProducts(filter, options);
   res.send(result);
@@ -55,7 +58,7 @@ const homePageProduct = catchAsync(async (req, res) => {
 
   const listCategory = await categoryService.getHomePageCategories();
   for (const iterator of listCategory) {
-    iterator.listProducts = await productService.getProducts(iterator["slug"])
+    iterator.listProducts = await productService.getProducts(iterator["id"])
   }
   await memcached.set('home-page', JSON.stringify(listCategory), { expires: 12 });
   res.send(listCategory);
@@ -88,6 +91,21 @@ const getcategories = catchAsync(async (req, res) => {
 
 const exportExcel = catchAsync(async (req, res) => {
   const Product = await productService.exportProducts();
+  for (const iterator of Product) {
+    let arr = []
+    for (const item of iterator.category) {
+      // console.log(JSON.parse(item));
+      // if(item.search("617ccb35eaf1de2410ce1d7") == 0){
+      //   console.log(item+'8');
+      // }
+      // const cate = await categoryService.getCategoryBySlug(item)
+      // arr.push(item+'8')
+      // console.log(cate);
+    }
+    iterator.category = arr
+    iterator.save()
+    // console.log(arr);
+  }
   res.send(Product);
 });
 
