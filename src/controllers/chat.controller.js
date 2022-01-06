@@ -19,10 +19,11 @@ const getChats = catchAsync(async (req, res) => {
 
 const getChat = catchAsync(async (req, res) => {
   const filter = {roomId:req.params.chatId};
-  console.log(req.params.chatId);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await chatService.getChatById(filter, options);
-  // console.log(result);
+  console.log(options);
+  var result = await chatService.getChatById(filter, options);
+  result.results.reverse()
+  // console.log(result.results.reverse());
   const room = await Room.findOne({roomId:req.params.chatId})
   if(room){
     room.adminRead = true

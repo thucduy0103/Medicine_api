@@ -10,7 +10,7 @@ const memcached = memjs.Client.create()
 
 const createProduct = catchAsync(async (req, res) => {
   const Product = await productService.createProduct(req.body);
-  res.status(httpStatus.CREATED).send(Product);
+  res.status(httpStatus.OK).send(Product);
 });
 
 const getProducts = catchAsync(async (req, res) => {
@@ -60,7 +60,7 @@ const homePageProduct = catchAsync(async (req, res) => {
   for (const iterator of listCategory) {
     iterator.listProducts = await productService.getProducts(iterator["id"])
   }
-  await memcached.set('home-page', JSON.stringify(listCategory), { expires: 12 });
+  // await memcached.set('home-page', JSON.stringify(listCategory), { expires: 12 });
   res.send(listCategory);
 });
 

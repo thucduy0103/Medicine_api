@@ -22,7 +22,8 @@ router.get('/get-product-by-id', validate(productValidation.getProductById), pro
 
 router.get('/search-product', validate(productValidation.searchProduct), productController.searchProduct);
 
-router.get('/home-page',memcache, productController.homePageProduct);
+// router.get('/home-page',memcache, productController.homePageProduct);
+router.get('/home-page', productController.homePageProduct);
 
 router.post('/home-page/clear',auth('admin'), productController.clearHomePageProduct);
 
