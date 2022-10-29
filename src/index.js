@@ -23,6 +23,8 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     server.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });
+}).catch((err)=>{
+  logger.info(`Connect to MongoDB ${config.mongoose.url} err${err}`);
 });
 
 const exitHandler = () => {
